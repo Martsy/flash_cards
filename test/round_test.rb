@@ -83,4 +83,10 @@ class RoundTest < Minitest::Test
     @round.take_turn('Venus')
     assert_equal 'Incorrect.', @round.turns.last.feedback
   end
+
+  def test_the_number_correct_in_round
+    @round.take_turn('Juneau')
+    @round.take_turn('Venus')
+    assert_equal 1, @round.number_correct 
+  end
 end
