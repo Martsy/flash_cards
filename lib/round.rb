@@ -1,9 +1,11 @@
 class Round
-  attr_reader :deck, :turns, :guess_count
+  attr_reader :deck,
+              :turns,
+              :guess_count
 
   def initialize(deck)
-    @deck = deck
-    @turns = []
+    @deck        = deck
+    @turns       = []
     @guess_count = 0
   end
 
@@ -12,8 +14,7 @@ class Round
   end
 
   def take_turn(guess)
-    new_turn = Turn.new(guess, current_card)
-    @turns << new_turn
+    @turns << new_turn = Turn.new(guess, current_card)
     @guess_count += 1
     new_turn
   end
@@ -37,5 +38,25 @@ class Round
   def percent_correct_in_category(category)
     number_correct_by_category(category).to_f /
       turns_in_category(category) * 100
+  end
+
+  def start
+    puts "Welcome! You're playing with #{@deck.count} cards."
+    puts "------------------------------"
+    @deck.cards.each { new_question }
+    end_game
+  end
+
+  def new_question
+    puts "This is card number #{@turns.count + 1} out of #{@deck.count}."
+    puts "Question: #{current_card.question}"
+    guess = gets.chomp
+    new_turn = take_turn(guess)
+    puts new_turn.feedback
+  end
+
+  def end_game
+    puts '****** Game over! ******'
+    puts "You had #{number_correct} correct guesses out of #{@turns.count} for a total score of #{percent_correct}%."
   end
 end
