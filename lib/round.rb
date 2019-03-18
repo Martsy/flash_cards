@@ -32,7 +32,7 @@ class Round
   end
 
   def percent_correct
-    (number_correct.to_f / turns.count * 100)
+    (number_correct.to_f / turns.count * 100).round(1)
   end
 
   def percent_correct_in_category(category)
@@ -40,23 +40,30 @@ class Round
       turns_in_category(category) * 100
   end
 
+  def category_results
+    deck.categories.each { category }
+    puts "#{category}: #{percent_correct_in_category}%"
+  end
+
   def start
-    puts "Welcome! You're playing with #{@deck.count} cards."
-    puts "------------------------------"
+    puts '*' * 39
+    puts "*Welcome! You're playing with #{@deck.count} cards.*"
+    puts '*' * 39
     @deck.cards.each { new_question }
-    end_game
+    end_of_game
   end
 
   def new_question
     puts "This is card number #{@turns.count + 1} out of #{@deck.count}."
     puts "Question: #{current_card.question}"
-    guess = gets.chomp
+    guess = gets.chomp.downcase.capitalize
     new_turn = take_turn(guess)
     puts new_turn.feedback
   end
 
-  def end_game
+  def end_of_game
     puts '****** Game over! ******'
-    puts "You had #{number_correct} correct guesses out of #{@turns.count} for a total score of #{percent_correct}%."
+    puts "You had #{number_correct} correct guesses out of #{@turns.count}"
+    puts "TOTAL SCORE: #{percent_correct}%."
   end
 end
